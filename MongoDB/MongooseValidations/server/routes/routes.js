@@ -7,5 +7,6 @@ module.exports = app => {
     app.get('/api/cars', controller.getCars);
     // UPDATE
     app.put('/api/cars/:id', controller.updateCar);
+    app.put('/api/cars/:id/passenger', controller.addPassengerToCar);
     // DELETE
 }

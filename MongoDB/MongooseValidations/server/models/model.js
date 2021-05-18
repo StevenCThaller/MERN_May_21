@@ -2,6 +2,29 @@ const mongoose = require('mongoose');
 
 const isWholeNumber = v => v === Math.floor(v)
 
+const PersonSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: [true, "You must enter a passenger name."]
+    },
+    age: {
+        type: Number,
+        required: [true, "You must enger a passenger age."],
+        min: [16, "Passenger must be at least 16 years old."]
+    },
+    phoneNumber: {
+        type: String,
+        required: [true, "You must enter a phone number."],
+        validate: {
+            validator: function(v) {
+                return /\d{3}-\d{3}-\d{4}/.test(v);
+            },
+            message: props => `${props.value} is not a valid phone number. Must follow xxx-xxx-xxxx format.`
+        }
+    }
+});
+
+
 const CarSchema = new mongoose.Schema({
     year: {
         type: Number,
@@ -36,7 +59,32 @@ const CarSchema = new mongoose.Schema({
     convertible: {
         type: Boolean,
         default: false
-    }
+    }, 
+    // method 1: embed the definition directly
+    // passengers: [{
+    //     name: {
+    //         type: String,
+    //         required: [true, "You must enter a passenger name."]
+    //     },
+    //     age: {
+    //         type: Number,
+    //         required: [true, "You must enger a passenger age."],
+    //         min: [16, "Passenger must be at least 16 years old."]
+    //     },
+    //     phoneNumber: {
+    //         type: String,
+    //         required: [true, "You must enter a phone number."],
+    //         validate: {
+    //             validator: function(v) {
+    //                 return /\d{3}-\d{3}-\d{4}/.test(v);
+    //             },
+    //             message: props => `${props.value} is not a valid phone number.`
+    //         }
+    //     }
+    // }]
+    // method 2: define the schema and add it in
+    passengers: [PersonSchema],
+    driver: PersonSchema
 }, { timestamps: true });
 
 const Car = mongoose.model("Car", CarSchema);
