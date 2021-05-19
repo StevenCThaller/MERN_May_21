@@ -1,23 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
+import { Router } from '@reach/router';
+import AllTrucks from './views/AllTrucks';
+import OneTruck from './views/OneTruck';
+import EditTruck from './views/EditTruck';
+import NewTruck from './views/NewTruck';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <Header/>
+      <Router>
+        <AllTrucks path="/"/>
+        <OneTruck path="/truck/:id"/>
+        <EditTruck path="/truck/:id/edit"/>
+        <NewTruck path="/truck/new"/>
+      </Router>
     </div>
   );
 }

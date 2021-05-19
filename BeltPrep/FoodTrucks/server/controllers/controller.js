@@ -27,13 +27,13 @@ module.exports = {
         Truck.exists({ _id: req.params._id, "reviews.name": req.body.name })
             .then(exists => {
                 if(exists){
-                    return Promise.reject("You cannot leave more than 1 review on this truck.");
+                    return Promise.reject({errors: { name: { message :"You cannot leave more than 1 review on this truck." } } });
                 } else {
                     return Truck.findByIdAndUpdate(req.params._id, { $push: { reviews: req.body } }, { new: true, runValidators: true })
                 }
             })
             .then(truck => res.json({ message: "success", results: truck }))
-            .catch(err => res.json({ message: "error", result: err }));
+            .catch(err => res.json({ message: "error", results: err.errors.reviews ? err.errors.reviews : err }));
     },
     // DELETE
     deleteTruck: (req, res) => {
