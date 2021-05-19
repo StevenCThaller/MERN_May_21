@@ -1,0 +1,98 @@
+Welcome to Cody's Crazy Cheat Sheet!
+
+In this cheat sheet I will walk through, step by step, the order that
+I like to go through file creation and whatnot
+
+// STEP 1: CREATE YOUR OVERALL PROJECT FOLDER
+
+    mkdir InsertProjectNameHere
+
+// STEP 2: NAVIGATE INTO THAT FOLDER
+
+    cd InsertProjectNameHere
+
+// STEP 3: CREATE YOUR REACT APP (mostly just getting this out of the way)
+
+    npx create-react-app client
+
+// STEP 4: WAIT A MILLION YEARS FOR THAT TO FINISH
+// STEP 5: NAVIGATE INTO YOUR CLIENT APP AND INSTALL THE RELEVANT DEPENDENCIES
+
+    cd client
+    npm install axios @reach/router
+
+// STEP 6: NOW BACK OUT AND TO START WORKING ON THE SERVER
+
+    cd ..
+
+// STEP 7: CREATE OUR SERVER FOLDER, AND THE RELEVENT FOLDERS WITHIN
+
+    mkdir server
+    cd server
+    mkdir config controllers models routes
+
+// STEP 8: NPM INITIALIZATION
+    
+    npm init -y
+    npm install express mongoose cors
+
+// STEP 9: LET'S MAKE OUR SERVER
+
+    code . server.js
+
+    /*************** FILE SHOULD LOOK LIKE THIS *****************/
+    const express = require('express');
+    const cors = require('cors');
+    const app = express();
+
+    app.use(cors());
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+
+    require('./config/mongoose.config');
+    require('./routes/routes.js')(app);
+
+    app.listen(8000, () => console.log("Now listening on port 8000"));
+    /**************************************************************/
+
+// STEP 10: SET UP OUR MONGOOSE CONFIGURATION FILE 
+    // INSIDE THE CONFIG FOLDER
+    /******************* mongoose.config.js ********************/
+    const mongoose = require('mongoose');
+    
+    mongoose.connect('mongodb://localhost/insertdbnamehere', { useNewUrlParser: true, useUnifiedTopology: true })
+        .then(() => console.log("DB connection established"))
+        .catch(err => console.log("Something went wrong: ", err));
+
+// STEP 11: GO HAM ON YOUR models
+
+    // INSIDE THE MODELS FOLDER
+    /******************* models.js **********************/
+    const mongoose = require('mongoose');
+
+    const YourSchema = new mongoose.Schema({
+        // go buck wild with your schema
+    }, { timestamps: true });
+
+    const Your = mongoose.model("Your", YourSchema);
+
+    module.exports = Your;
+
+// STEP 12: SET UP YOUR CONTROLLER FILE
+    // INSIDE THE CONTROLLERS FOLDER
+    /*********************** controller.js ***********************/
+    const Your = require('../models/models');
+    module.exports = {
+        // insert methods here
+    }
+
+// STEP 13: INITIALIZE YOUR ROUTES FILE
+    // INSIDE THE ROUTES FOLDER
+    /******************** routes.js *********************/
+    const controller = require('../controllers/controller');
+
+    module.exports = app => {
+        // insert routes here
+    }
+
+// NOW THE REST IS UP TO YOU!!!
